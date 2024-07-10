@@ -29,17 +29,20 @@ Pastikan sudah menginstal:
 - Git
 ### Langkah-Langkah Instalasi
 1. Clone Repository
+
    Clone repository proyek KonsulAku dari GitHub ke direktori lokal Anda.
    ```
    git clone https://github.com/Sumitraadrian/KonsulAku.git
    cd repo
    ```
 2. Buat Virtual Environment
+
    Buat virtual environment untuk mengisolasi dependensi proyek.
    ```
    python -m venv env
    ```
 3. Aktifkan Virtual Environment
+
    Aktifkan virtual environment. Perintah ini bergantung pada sistem operasi yang anda gunakan:
    - Windows:
      ```
@@ -50,14 +53,17 @@ Pastikan sudah menginstal:
      source env/bin/activate
      ```
 4. Install Dependensi
+
    Instal semua dependensi yang diperlukan dari **requirements.txt**.
    ```
    pip install -r requirements.txt
    ```
 5. Jalankan Aplikasi
+
    Jalankan aplikasi Flask.
    ```
    flask run
    ```
 6. Akses Aplikasi
+
    Buka browser dan akses aplikasi di **http://127.0.0.1:5000**.
