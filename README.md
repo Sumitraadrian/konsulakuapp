@@ -20,3 +20,44 @@ You can check out our proposal [Proposal KonsulAku](https://www.canva.com/design
 
 ## Teaser Video Preview
 Get a sneak peek of our project with our teaser video [here](https://www.instagram.com/reel/C64JGxJyY50TlPkwj7Wk6xHV6r_QMv8BB6jwnk0/?igsh=MWxhYXBhcWV5ajY0Nw==) !
+
+## Installation Instructions
+### Persyaratan
+Pastikan sudah menginstal:
+- Python 3.7 atau lebih tinggi
+- pip (Python package installer)
+- Git
+### Langkah-Langkah Instalasi
+1. Clone Repository
+   Clone repository proyek KonsulAku dari GitHub ke direktori lokal Anda.
+   ```
+   git clone https://github.com/Sumitraadrian/konsulAku.git
+   cd repo
+   ```
+2. Buat Virtual Environment
+   Buat virtual environment untuk mengisolasi dependensi proyek.
+   ```
+   python -m venv env
+   ```
+3. Aktifkan Virtual Environment
+   Aktifkan virtual environment. Perintah ini bergantung pada sistem operasi yang anda gunakan:
+   - Windows:
+     ```
+     .\env\Scripts\activate
+     ```
+   - macOS/Linux:
+     ```
+     source env/bin/activate
+     ```
+4. Install Dependensi
+   Instal semua dependensi yang diperlukan dari **requirements.txt**.
+   ```
+   pip install -r requirements.txt
+   ```
+5. Jalankan Aplikasi
+   Jalankan aplikasi Flask.
+   ```
+   flask run
+   ```
+6. Akses Aplikasi
+   Buka browser dan akses aplikasi di **http://127.0.0.1:5000**.
