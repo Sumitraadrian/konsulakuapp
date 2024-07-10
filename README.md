@@ -31,7 +31,7 @@ Pastikan sudah menginstal:
 1. Clone Repository
    Clone repository proyek KonsulAku dari GitHub ke direktori lokal Anda.
    ```
-   git clone https://github.com/Sumitraadrian/konsulAku.git
+   git clone https://github.com/Sumitraadrian/KonsulAku.git
    cd repo
    ```
 2. Buat Virtual Environment
