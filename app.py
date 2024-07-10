@@ -22,35 +22,43 @@ model = tf.keras.Sequential([
 disease_info = {
     0: {
         'label': 'Cellulitis',
-        'description': 'Cellulitis is a common bacterial skin infection that causes redness, swelling, and pain in the infected area of the skin.'
+        'description': 'Cellulitis is a common bacterial skin infection that causes redness, swelling, and pain in the infected area of the skin.',
+        'solution': 'Treatment usually involves antibiotics to eliminate the infection. It is important to keep the affected area clean and dry.'
     },
     1: {
         'label': 'Impetigo',
-        'description': 'Impetigo is a highly contagious skin infection that causes red sores, often on the face, especially around the nose and mouth.'
+        'description': 'Impetigo is a highly contagious skin infection that causes red sores, often on the face, especially around the nose and mouth.',
+        'solution': 'Treatment includes antibiotic ointments or oral antibiotics prescribed by a doctor. Keeping the sores clean and covered can help prevent spreading.'
     },
     2: {
         'label': 'Athlete Foot',
-        'description': 'Athlete\'s foot is a fungal infection that usually begins between the toes. It commonly occurs in people whose feet have become very sweaty while confined within tight-fitting shoes.'
+        'description': 'Athlete\'s foot is a fungal infection that usually begins between the toes. It commonly occurs in people whose feet have become very sweaty while confined within tight-fitting shoes.',
+        'solution': 'Treatment typically involves antifungal creams or medications. Keeping feet clean and dry, and avoiding tight-fitting shoes can help prevent recurrence.'
     },
     3: {
         'label': 'Nail Fungus',
-        'description': 'Nail fungus is a common condition that begins as a white or yellow spot under the tip of your fingernail or toenail. As the fungal infection goes deeper, nail fungus may cause your nail to discolor, thicken and crumble at the edge.'
+        'description': 'Nail fungus is a common condition that begins as a white or yellow spot under the tip of your fingernail or toenail. As the fungal infection goes deeper, nail fungus may cause your nail to discolor, thicken and crumble at the edge.',
+        'solution': 'Treatment may include oral antifungal medications or medicated nail polish. Keeping nails trimmed and dry can help prevent further infections.'
     },
     4: {
         'label': 'Ringworm',
-        'description': 'Ringworm is a common fungal infection that causes a ring-shaped rash. It is not caused by a worm, despite its name.'
+        'description': 'Ringworm is a common fungal infection that causes a ring-shaped rash. It is not caused by a worm, despite its name.',
+        'solution': 'Treatment usually involves antifungal medications applied to the affected area. Keeping the affected area clean and dry can speed up recovery and prevent spreading.'
     },
     5: {
         'label': 'Cutaneous Larva Migrans',
-        'description': 'Cutaneous larva migrans is a skin infection caused by hookworm larvae that usually results in a red, winding rash on the skin.'
+        'description': 'Cutaneous larva migrans is a skin infection caused by hookworm larvae that usually results in a red, winding rash on the skin.',
+        'solution': 'Treatment involves topical antiparasitic medications to kill the larvae. Avoiding contact with contaminated soil or sand can prevent infection.'
     },
     6: {
         'label': 'Chickenpox',
-        'description': 'Chickenpox is an infection caused by the varicella-zoster virus. It causes an itchy rash with small, fluid-filled blisters.'
+        'description': 'Chickenpox is an infection caused by the varicella-zoster virus. It causes an itchy rash with small, fluid-filled blisters.',
+        'solution': 'Treatment focuses on relieving symptoms, such as using calamine lotion and antihistamines for itching. Vaccination can prevent chickenpox.'
     },
     7: {
         'label': 'Shingles',
-        'description': 'Shingles is a viral infection that causes a painful rash. It is caused by the varicella-zoster virus, the same virus that causes chickenpox.'
+        'description': 'Shingles is a viral infection that causes a painful rash. It is caused by the varicella-zoster virus, the same virus that causes chickenpox.',
+        'solution': 'Treatment includes antiviral medications to reduce the severity and duration of symptoms. Pain medications and cool compresses can help relieve discomfort.'
     }
 }
 
@@ -81,8 +89,9 @@ def predict():
     predicted_class = np.argmax(predictions)
     predicted_label = disease_info[predicted_class]['label']
     predicted_description = disease_info[predicted_class]['description']
+    predicted_solution = disease_info[predicted_class]['solution']
     
-    return jsonify({'label': predicted_label, 'description': predicted_description, 'filename': file.filename})
+    return jsonify({'label': predicted_label, 'description': predicted_description, 'solution': predicted_solution, 'filename': file.filename})
 
 # Chatbot endpoint
 @socketio.on('message')
@@ -97,7 +106,9 @@ def process_message(message):
     
     for disease_id, info in disease_info.items():
         if info['label'].lower() in message.lower():
-            return info['description']
+            if 'solution' in message.lower() or 'treatment' in message.lower():
+                return f"Solution for {info['label']}: {info['solution']}"
+            return f"{info['label']}: {info['description']}"
     
     return "I'm here to help! You can ask me about the symptoms or treatment of any skin disease listed above."
 

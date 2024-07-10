@@ -27,10 +27,11 @@
         }
 
         .sidebar img {
-            width: 50px;
-            height: 50px;
+            width: 150px; /* Adjust the width as needed */
+            height: 55px; /* Adjust the height as needed */
             margin-bottom: 20px;
         }
+        
 
         .sidebar button {
             width: 100%;
@@ -87,31 +88,43 @@
 
         .message {
             margin-bottom: 10px;
+            display: flex;
+            justify-content: flex-start;
+            clear: both;
         }
 
         .message.user {
-            text-align: right;
+            justify-content: flex-end;
         }
 
         .message.user .text {
             background-color: #007bff;
             color: white;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            border-bottom-left-radius: 10px;
+            margin-left: auto;
         }
 
         .message.bot .text {
             background-color: #f1f1f1;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
         }
 
         .message .text {
             display: inline-block;
             padding: 10px;
             border-radius: 10px;
+            max-width: 70%;
+            word-wrap: break-word;
         }
     </style>
 </head>
 <body>
     <div class="sidebar">
-        <img src="logo.png" alt="Logo">
+        <img src="static/logo.png" alt="Logo">
         <button>New Chat</button>
     </div>
     <div class="main-content">

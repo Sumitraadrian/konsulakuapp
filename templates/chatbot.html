@@ -27,8 +27,8 @@
         }
 
         .sidebar img {
-            width: 50px;
-            height: 50px;
+            width: 100px;
+            height: 100px;
             margin-bottom: 20px;
         }
 
@@ -111,7 +111,7 @@
 </head>
 <body>
     <div class="sidebar">
-        <img src="logo.png" alt="Logo">
+        <img src="static/logo.png" alt="Logo">
         <button>New Chat</button>
     </div>
     <div class="main-content">
@@ -144,7 +144,10 @@
 
             socket.on('response', function (data) {
                 appendMessage('bot', data.response);
-                if (data.response.toLowerCase().includes('upload')) {
+                if (data.solution) {
+                    appendMessage('bot', 'Solution: ' + data.solution);
+                }
+                if (data.upload) {
                     $('#upload-predict-buttons').show();
                 } else {
                     $('#upload-predict-buttons').hide();
