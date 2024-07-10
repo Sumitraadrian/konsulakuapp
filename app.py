@@ -66,51 +66,69 @@ disease_info = {
 def home():
     return render_template('index.html')
 
+# Route untuk prediksi gambar
 @app.route('/predict', methods=['POST'])
 def predict():
+    global img, predictions
+
     if 'file' not in request.files:
         return "No file part"
     file = request.files['file']
     if file.filename == '':
         return "No selected file"
-    
-    # Save the file to the static/uploads directory
+
+    # Simpan file ke direktori static/uploads
     file_path = os.path.join('static/uploads', file.filename)
     file.save(file_path)
-    
-    # Read and preprocess the image
+
+    # Baca dan preprocess gambar
     img = cv2.imread(file_path)
     img = cv2.resize(img, (224, 224))
     img = img / 255.0
     img = np.expand_dims(img, axis=0)
-    
-    # Predict the disease
+
+    # Prediksi penyakit
     predictions = model.predict(img)
-    predicted_class = np.argmax(predictions)
+
+    # Ambil label prediksi
+    predicted_class = np.argmax(predictions['dense'][0])
     predicted_label = disease_info[predicted_class]['label']
     predicted_description = disease_info[predicted_class]['description']
-    predicted_solution = disease_info[predicted_class]['solution']
-    
-    return jsonify({'label': predicted_label, 'description': predicted_description, 'solution': predicted_solution, 'filename': file.filename})
+
+    # Return response
+    return jsonify({'label': predicted_label, 'description': predicted_description, 'filename': file.filename})
+
+
 
 # Chatbot endpoint
 @socketio.on('message')
 def handle_message(message):
+    print(f"Received message: {message}")
+
     response = process_message(message)
     emit('response', {'response': response})
 
 def process_message(message):
+    print(f"Received message: {message}")
+
     # Dummy response logic, implement your chatbot logic here
     if 'help me detect skin disease' in message.lower():
+        print("User requests help detecting skin disease")
         return "Okay, please upload an image of the skin condition."
-    
+
+    # Check if the message asks for solution or treatment
+    if any(keyword in message.lower() for keyword in ['solution', 'treatment', 'how to treat']):
+        for disease_id, info in disease_info.items():
+            if info['label'].lower() in message.lower():
+                return f"Solution for {info['label']}: {info['solution']}"
+
+    # Provide general information if no specific request found
     for disease_id, info in disease_info.items():
         if info['label'].lower() in message.lower():
-            if 'solution' in message.lower() or 'treatment' in message.lower():
-                return f"Solution for {info['label']}: {info['solution']}"
             return f"{info['label']}: {info['description']}"
-    
+
     return "I'm here to help! You can ask me about the symptoms or treatment of any skin disease listed above."
+
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
