@@ -6,15 +6,13 @@ import numpy as np
 import tensorflow as tf
 from flask_socketio import SocketIO, emit
 from keras.layers import TFSMLayer
+from dotenv import load_dotenv
 
 # Muat variabel lingkungan dari file .env
 load_dotenv()
 
 app = Flask(__name__)
 socketio = SocketIO(app)
-
-# Path to the SavedModel directory
-# saved_model_dir = 'model/skin_disease_model_saved'
 
 # Ambil variabel lingkungan
 SECRET_KEY = os.environ.get('SECRET_KEY', '062502konsulaku')
