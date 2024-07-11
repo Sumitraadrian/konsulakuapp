@@ -7,15 +7,25 @@ import tensorflow as tf
 from flask_socketio import SocketIO, emit
 from keras.layers import TFSMLayer
 
+# Muat variabel lingkungan dari file .env
+load_dotenv()
+
 app = Flask(__name__)
 socketio = SocketIO(app)
 
 # Path to the SavedModel directory
-saved_model_dir = 'model/skin_disease_model_saved'
+# saved_model_dir = 'model/skin_disease_model_saved'
+
+# Ambil variabel lingkungan
+SECRET_KEY = os.environ.get('SECRET_KEY', '062502konsulaku')
+MODEL_PATH = os.environ.get('MODEL_PATH', 'model/skin_disease_model_saved')
+
+# Atur secret key untuk Flask
+app.config['SECRET_KEY'] = SECRET_KEY
 
 # Load model using TFSMLayer
 model = tf.keras.Sequential([
-    TFSMLayer(saved_model_dir, call_endpoint='serving_default')
+    TFSMLayer(MODEL_PATH, call_endpoint='serving_default')
 ])
 
 # Disease labels and detailed information
