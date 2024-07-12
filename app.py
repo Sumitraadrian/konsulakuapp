@@ -7,19 +7,26 @@ import tensorflow as tf
 from flask_socketio import SocketIO, emit
 from keras.layers import TFSMLayer
 from dotenv import load_dotenv
+from flask_pymongo import PyMongo
+from flask import request, jsonify
 
 # Muat variabel lingkungan dari file .env
 load_dotenv()
 
 app = Flask(__name__)
-socketio = SocketIO(app)
-
 # Ambil variabel lingkungan
 SECRET_KEY = os.environ.get('SECRET_KEY', '062502konsulaku')
 MODEL_PATH = os.environ.get('MODEL_PATH', 'model/skin_disease_model_saved')
 
 # Atur secret key untuk Flask
 app.config['SECRET_KEY'] = SECRET_KEY
+app.config['MONGO_URI'] = 'mongodb+srv://sumitraadriansyah:nanang0102*@konsulaku.o95ggwj.mongodb.net/konsulaku?retryWrites=true&w=majority'  # Replace with your MongoDB URI
+
+# Initialize PyMongo
+mongo = PyMongo(app)
+
+# Initialize Flask-SocketIO
+socketio = SocketIO(app)
 
 # Load model using TFSMLayer
 model = tf.keras.Sequential([
@@ -132,6 +139,12 @@ last_predicted_disease = None
 def home():
     return render_template('index.html')
 
+# Chatbot introduction message
+INTRO_MESSAGE = "Hi! I'm here to help you detect skin diseases from images. Please upload an image of the skin condition you want to diagnose."
+
+# Chatbot closing message
+CLOSING_MESSAGE = "Thank you for using our skin disease detection service. Feel free to ask if you have any more questions!"
+
 # Route untuk prediksi gambar
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -166,7 +179,17 @@ def predict():
     last_predicted_disease = disease_info[predicted_class]
 
     # Return response
-    return jsonify({'label': predicted_label, 'description': predicted_description, 'solution': predicted_solution, 'filename': file.filename})
+    response = {
+        'label': predicted_label,
+        'description': predicted_description,
+        'solution': predicted_solution,
+        'filename': file.filename,
+        'message': "Do you need any more help or information?"
+    }
+
+    # Menambahkan pesan bantuan tambahan setelah deteksi
+    response['message'] = "Do you need any more help or information?"
+    return jsonify(response)
 
 # Chatbot endpoint
 @socketio.on('message')
@@ -175,6 +198,9 @@ def handle_message(message):
 
     response = process_message(message)
     emit('response', {'response': response})
+
+    # Save user message to MongoDB
+    mongo.db.messages.insert_one({'sender': 'user', 'message': message})
 
 def process_message(message):
     global last_predicted_disease
@@ -188,8 +214,8 @@ def process_message(message):
     if 'solution' in message.lower() or 'treatment' in message.lower():
         if last_predicted_disease:
             return f"Solution for {last_predicted_disease['label']}: {last_predicted_disease['solution']}"
-        
-     # Check if user asks for disease description
+
+    # Check if user asks for disease description
     if 'what is the disease' in message.lower():
         if last_predicted_disease:
             return f"{last_predicted_disease['label']}: {last_predicted_disease['description']}"
@@ -212,13 +238,25 @@ def process_message(message):
                 response = f"Prevention tips for {info['label']}: {info['prevention']}"
             elif 'alternative treatments' in message.lower():
                 response = f"Alternative treatments for {info['label']}: {info['alternative_treatments']}"
-            elif any(word in message.lower() for word in ['when to see a doctor', 'consult a doctor', 'when i must go to doctor']):
+            elif any(word in message.lower() for word in ['when to see doctor', 'consult a doctor', 'when i must go to doctor']):
                 response = f"When to see a doctor for {info['label']}: {info['when_to_see_a_doctor']}"
 
             if response:
                 return response
-        
+
+    # Closing message when no specific request found
+    if 'thank you' in message.lower() or 'bye' in message.lower() or 'goodbye' in message.lower():
+        return CLOSING_MESSAGE
+
+    # Introduction message at the beginning of the conversation
+    if 'hi' in message.lower() or 'hello' in message.lower() or 'start' in message.lower() or 'begin' in message.lower():
+        return INTRO_MESSAGE
+
     return "I'm here to help! You can ask me about the symptoms or treatment of any skin disease listed above."
+
+# Main entry point
+if __name__ == '__main__':
+    socketio.run(app, debug=True)
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
