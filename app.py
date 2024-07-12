@@ -102,9 +102,10 @@ def predict():
     predicted_class = np.argmax(predictions['dense'][0])
     predicted_label = disease_info[predicted_class]['label']
     predicted_description = disease_info[predicted_class]['description']
+    predicted_solution = disease_info[predicted_class]['solution']
 
     # Return response
-    return jsonify({'label': predicted_label, 'description': predicted_description, 'filename': file.filename})
+    return jsonify({'label': predicted_label, 'description': predicted_description, 'solution': predicted_solution,'filename': file.filename})
 
 
 
@@ -124,16 +125,15 @@ def process_message(message):
         print("User requests help detecting skin disease")
         return "Okay, please upload an image of the skin condition."
 
-    # Check if the message asks for solution or treatment
-    if any(keyword in message.lower() for keyword in ['solution', 'treatment', 'how to treat']):
-        for disease_id, info in disease_info.items():
-            if info['label'].lower() in message.lower():
-                return f"Solution for {info['label']}: {info['solution']}"
-
     # Provide general information if no specific request found
     for disease_id, info in disease_info.items():
         if info['label'].lower() in message.lower():
-            return f"{info['label']}: {info['description']}"
+            return f"{info['label']}: {info['description']}: {info['solution']}"
+            # Check if the message asks for solution or treatment
+            if any(keyword in message.lower() for keyword in ['solution', 'treatment', 'how to treat']):
+                for disease_id, info in disease_info.items():
+                    if info['label'].lower() in message.lower():
+                        return f"Solution for {info['label']}: {info['solution']}"
 
     return "I'm here to help! You can ask me about the symptoms or treatment of any skin disease listed above."
 
