@@ -64,7 +64,7 @@ Pastikan sudah menginstal:
 
    Jalankan aplikasi Flask.
    ```
-   flask run
+   python app.py
    ```
 6. Akses Aplikasi
 
