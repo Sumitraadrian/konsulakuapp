@@ -149,7 +149,8 @@
     <script>
         $(document).ready(function () {
             var socket = io();
-            
+            var chatHistory = []; // Array untuk menyimpan riwayat percakapan
+        
             $('#send-button').on('click', function (event) {
                 event.preventDefault();
                 var message = $('#message-input').val();
@@ -160,7 +161,7 @@
                     checkMessage(message);
                 }
             });
-
+        
             socket.on('response', function (data) {
                 appendMessage('bot', data.response);
                 if (data.response.toLowerCase().includes('upload')) {
@@ -168,8 +169,10 @@
                 } else {
                     $('#upload-predict-buttons').hide();
                 }
+                // Simpan pesan dari bot ke riwayat percakapan
+                chatHistory.push({ sender: 'bot', message: data.response });
             });
-
+        
             $('#image-form').on('submit', function (event) {
                 event.preventDefault();
                 var formData = new FormData(this);
@@ -183,20 +186,33 @@
                         appendMessage('bot', 'Predicted Label: ' + response.label);
                         appendMessage('bot', response.description);
                         appendMessage('bot', '<img src="/static/uploads/' + response.filename + '" width="300">');
+                        // Simpan pesan dari bot ke riwayat percakapan
+                        chatHistory.push({ sender: 'bot', message: 'Predicted Label: ' + response.label });
+                        chatHistory.push({ sender: 'bot', message: response.description });
                     },
                     error: function (error) {
                         console.log(error);
                     }
                 });
             });
-
+        
+            $('#new-chat-button').on('click', function (event) {
+                event.preventDefault();
+                $('#chat-box').empty();  // Bersihkan chat box
+                $.get('/get_messages', function (data) {
+                    data.forEach(function (message) {
+                        appendMessage(message.sender, message.message);
+                    });
+                });
+            });
+        
             function appendMessage(sender, text) {
                 var messageClass = sender === 'user' ? 'user' : 'bot';
                 var messageHtml = '<div class="message ' + messageClass + '"><div class="text">' + text + '</div></div>';
                 $('#chat-box').append(messageHtml);
                 $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight);
             }
-
+        
             function checkMessage(message) {
                 if (message.toLowerCase().includes('help me detect skin disease')) {
                     $('#upload-predict-buttons').show();
@@ -205,6 +221,8 @@
                 }
             }
         });
+        
+
     </script>
 </body>
 </html>
