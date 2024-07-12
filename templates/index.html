@@ -234,6 +234,14 @@
                     var messageHtml = '<div class="message ' + messageClass + '"><div class="text">' + text + '</div></div>';
                     $('#chat-box').append(messageHtml);
                     $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight);
+
+                    // Check if user has thanked
+                    if (text.toLowerCase().includes('thank')) {
+                        var warningMessage = "Please remember to consult with a doctor for proper diagnosis and treatment of skin diseases.";
+                        var warningHtml = '<div class="message bot"><div class="text">' + warningMessage + '</div></div>';
+                        $('#chat-box').append(warningHtml);
+                        $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight);
+                    }
                 }
         
                 function checkMessage(message) {
