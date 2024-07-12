@@ -4,7 +4,7 @@
 1. [1217050134]() Siti Jahro Maulidiyah
 2. [1217050135](https://github.com/SitiNurhayatiGunawan017) Siti Nurhayati Gunawan
 3. [1217050137](https://github.com/Sumitraadrian) Sumitra Adriansyah
-4. [12170501]() Yuqa Sakif Ardiyansyah
+4. [1217050147]() Yuqa Sakif Ardiyansyah
 
 ## What problem do we want to address?
 
@@ -64,7 +64,7 @@ Pastikan sudah menginstal:
 
    Jalankan aplikasi Flask.
    ```
-   flask run
+   python app.py
    ```
 6. Akses Aplikasi
 
