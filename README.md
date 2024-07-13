@@ -21,9 +21,32 @@ You can check out our proposal [Proposal KonsulAku](https://www.canva.com/design
 ## Teaser Video Preview
 Get a sneak peek of our project with our teaser video [here](https://www.instagram.com/reel/C64JGxJyY50TlPkwj7Wk6xHV6r_QMv8BB6jwnk0/?igsh=MWxhYXBhcWV5ajY0Nw==) !
 
+## Demontration Aplication
+
+## Research Paper
+## Tecnology Stacks
+- Machine Learning
+     - Python
+     - Tenserflow
+     - Google Colab
+     - Numpy
+     - Pandas
+     - OpenCV
+     - Matplotlib
+     - Mobilenet V2
+- Frontend Development
+     - Html
+     - CSS
+     - Javascript
+     - Boostrap
+- Backend Development
+     - Flask
+     - SocketIO
 ---
 
 ## Installation Instructions
+<details>
+  <summary>Click to expand</summary>
 ### Persyaratan
 Pastikan sudah menginstal:
 - Python 3.7 atau lebih tinggi
@@ -69,3 +92,5 @@ Pastikan sudah menginstal:
 6. Akses Aplikasi
 
    Buka browser dan akses aplikasi di **http://127.0.0.1:5000**.
+
+</details>
