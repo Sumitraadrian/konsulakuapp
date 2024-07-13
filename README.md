@@ -47,12 +47,14 @@ Get a sneak peek of our project with our teaser video [here](https://www.instagr
 ## Installation Instructions
 <details>
   <summary>Click to expand</summary>
-### Persyaratan
+## Persyaratan
+     
 Pastikan sudah menginstal:
 - Python 3.7 atau lebih tinggi
 - pip (Python package installer)
 - Git
-### Langkah-Langkah Instalasi
+## Langkah-Langkah Instalasi
+
 1. Clone Repository
 
    Clone repository proyek KonsulAku dari GitHub ke direktori lokal Anda.
