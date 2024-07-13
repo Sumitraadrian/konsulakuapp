@@ -51,13 +51,14 @@ This research paper describes in detail the implementation of machine learning a
 <details>
   <summary>Click to expand</summary>
      
-### Persyaratan
+### Requirements
      
-Pastikan sudah menginstal:
-- Python 3.7 atau lebih tinggi
+Make sure you have installed:
+- Python 3.7 or higher
 - pip (Python package installer)
 - Git
-### Langkah-Langkah Instalasi
+  
+### Installation Steps
 
 1. Clone Repository
 
